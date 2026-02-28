@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<title>Payment Submit</title>
+
+<script>
+// 🔒 Right click block
+document.addEventListener("contextmenu", e => e.preventDefault());
+
+// 🔒 Dev tools block
+document.onkeydown = function(e){
+if(e.keyCode==123) return false;
+if(e.ctrlKey && e.shiftKey && e.keyCode==73) return false;
+if(e.ctrlKey && e.keyCode==85) return false;
+}
+</script>
+
+<style>
+body{font-family:sans-serif;text-align:center;padding:50px;background:#f4f6f8}
+input{padding:12px;margin:8px;width:250px}
+button{padding:12px 25px;background:#ff3b00;color:#fff;border:none}
+#download{display:none;margin-top:20px}
+</style>
+</head>
+
+<body>
+
+<h2>Payment Confirmation</h2>
+
+<form onsubmit="submitPayment(event)">
+<input id="name" placeholder="Name" required><br>
+<input id="phone" placeholder="Phone" required><br>
+<input id="trx" placeholder="TRX ID" required><br>
+
+<button>Submit</button>
+</form>
+
+<p id="msg"></p>
+
+<div id="download">
+<a href="download.html">⚡ Download Now</a>
+</div>
+
+<script>
+function submitPayment(e){
+e.preventDefault();
+
+var name=name.value;
+var phone=phone.value;
+var trx=trx.value;
+
+// Save order locally
+localStorage.setItem("order", JSON.stringify({
+name, phone, trx, approved:false
+}));
+
+// WhatsApp send
+window.open("https://wa.me/8801715247588?text=Payment%0AName:"+name+"%0APhone:"+phone+"%0ATRX:"+trx);
+
+msg.innerHTML="⏳ Waiting for admin approval...";
+}
+
+// Check approval
+setInterval(()=>{
+var order=JSON.parse(localStorage.getItem("order"));
+if(order && order.approved){
+download.style.display="block";
+msg.innerHTML="✅ Approved!";
+}
+},2000);
+</script>
+
+</body>
+</html>
