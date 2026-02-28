@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Panel</title>
+<script>
+var password="admin@452";
+
+function login(){
+if(document.getElementById("pass").value==password){
+document.getElementById("panel").style.display="block";
+document.getElementById("login").style.display="none";
+}else{
+alert("Wrong password");
+}
+}
+
+function approve(){
+var order=JSON.parse(localStorage.getItem("order"));
+order.approved=true;
+localStorage.setItem("order", JSON.stringify(order));
+alert("Order Approved");
+}
+</script>
+
+<style>
+body{text-align:center;font-family:sans-serif;padding:50px}
+button{padding:12px 25px;background:green;color:#fff;border:none}
+</style>
+</head>
+
+<body>
+
+<div id="login">
+<h2>Admin Login</h2>
+<input type="password" id="pass" placeholder="Password">
+<button onclick="login()">Login</button>
+</div>
+
+<div id="panel" style="display:none;">
+<h2>Order Approval</h2>
+<button onclick="approve()">Approve Order</button>
+</div>
+
+</body>
+</html>
